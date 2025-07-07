@@ -1,4 +1,4 @@
-// app/order.tsx
+// app/more.tsx
 import { View, Text } from 'react-native';
 
 export default function OrderScreen() {

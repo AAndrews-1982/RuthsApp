@@ -2,8 +2,8 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../../app/HomeScreen';
 import MenuScreen from '../../app/Menu';
-import OrderScreen from '../../app/Order';
-import AccountScreen from '../../app/Account';
+import OrderScreen from '../../app/order';
+import AccountScreen from '../../app/rewards';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
