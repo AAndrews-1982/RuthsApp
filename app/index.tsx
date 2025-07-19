@@ -33,7 +33,7 @@ export default function HomeScreen() {
   return (
     <ScrollView style={{ flex: 1 }}>
       <ImageBackground
-        source={require('../assets/images/img1.jpg')}
+        source={require('../assets/images/img2.png')}
         resizeMode="cover"
         style={styles.background}
       >
