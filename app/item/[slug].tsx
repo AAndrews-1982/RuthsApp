@@ -4,12 +4,14 @@ import { SafeAreaView, View, Text, Image, StyleSheet, ScrollView, Pressable, Ale
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ALL_MENU_ITEMS } from '../../src/data/menuData';
 import Chip from '../../components/Chip';
+import { useCart } from '../context/CartContext'; // ← ADDED
 
 const placeholderImage = require('../../assets/images/placeholder.png');
 
 export default function ItemDetailScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const router = useRouter();
+  const { addItem } = useCart(); // ← ADDED
 
   const item = useMemo(() => ALL_MENU_ITEMS.find(i => i.slug === slug), [slug]);
 
@@ -42,7 +44,6 @@ export default function ItemDetailScreen() {
       setSelectedFlavors(prev => prev.filter(x => x !== f));
       return;
     }
-    // Add – respect max
     if (maxFlavors === 0) return;
     if (selectedFlavors.length >= maxFlavors) return; // silently ignore when at limit
     setSelectedFlavors(prev => [...prev, f]);
@@ -56,7 +57,6 @@ export default function ItemDetailScreen() {
 
   const readyToAdd =
     (maxFlavors === 0 || selectedFlavors.length === maxFlavors) &&
-    // If Celiac is toggled, we also require glutenFree to be on (to prevent wheat bun accidentally)
     (!celiacProtocol || glutenFree);
 
   const handleAddToOrder = () => {
@@ -71,7 +71,23 @@ export default function ItemDetailScreen() {
       }
     }
 
-    // You can wire this to your cart/store later
+    // ↓↓↓ ADDED: push item into the cart so the cart button appears
+    const modsForCart = [
+      ...selectedModifiers,
+      ...(item.glutenFreeNote && glutenFree ? [item.glutenFreeNote] : []),
+      ...(item.celiacNote && celiacProtocol ? ['Celiac Protocol'] : []),
+    ];
+
+    addItem({
+      name: item.name,
+      price: item.price,   // keep base price here; you can add modifier pricing in checkout if desired
+      qty: 1,
+      flavors: selectedFlavors,
+      modifiers: modsForCart,
+    });
+    // ↑↑↑
+
+    // Keep your existing confirmation
     const summary = [
       `Item: ${item.name}`,
       `Price: $${item.price.toFixed(2)}`,
@@ -158,7 +174,7 @@ export default function ItemDetailScreen() {
           </View>
         )}
 
-        {/* Gluten Free toggle (only show if item has a GF note in data) */}
+        {/* Gluten Free toggle */}
         {item.glutenFreeNote && (
           <View style={styles.block}>
             <Text style={styles.blockTitle}>{item.glutenFreeNote}</Text>
@@ -175,7 +191,7 @@ export default function ItemDetailScreen() {
           </View>
         )}
 
-        {/* Celiac callout + protocol option */}
+        {/* Celiac callout */}
         {item.celiacNote && (
           <View style={[styles.block, styles.celiacWrap]}>
             <Text style={styles.celiac}>CELIAC</Text>
