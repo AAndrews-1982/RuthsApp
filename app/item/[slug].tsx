@@ -1,19 +1,27 @@
 // app/item/[slug].tsx
 import React, { useMemo, useState } from 'react';
-import { SafeAreaView, View, Text, Image, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ALL_MENU_ITEMS } from '../../src/data/menuData';
 import Chip from '../../components/Chip';
-import { useCart } from '../context/CartContext'; // ← ADDED
+import { useCart } from '../context/CartContext';
 
 const placeholderImage = require('../../assets/images/placeholder.png');
 
 export default function ItemDetailScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const router = useRouter();
-  const { addItem } = useCart(); // ← ADDED
+  const { addItem } = useCart();
 
-  const item = useMemo(() => ALL_MENU_ITEMS.find(i => i.slug === slug), [slug]);
+  const item = useMemo(() => ALL_MENU_ITEMS.find((i) => i.slug === slug), [slug]);
 
   // State
   const [selectedFlavors, setSelectedFlavors] = useState<string[]>([]);
@@ -25,7 +33,7 @@ export default function ItemDetailScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.headerRow}>
-          <Pressable onPress={() => router.back()} style={styles.backBtn}>
+          <Pressable onPress={() => router.replace('/order')} style={styles.backBtn}>
             <Text style={styles.backText}>← Back</Text>
           </Pressable>
         </View>
@@ -41,17 +49,17 @@ export default function ItemDetailScreen() {
   const onToggleFlavor = (f: string) => {
     const exists = selectedFlavors.includes(f);
     if (exists) {
-      setSelectedFlavors(prev => prev.filter(x => x !== f));
+      setSelectedFlavors((prev) => prev.filter((x) => x !== f));
       return;
     }
     if (maxFlavors === 0) return;
-    if (selectedFlavors.length >= maxFlavors) return; // silently ignore when at limit
-    setSelectedFlavors(prev => [...prev, f]);
+    if (selectedFlavors.length >= maxFlavors) return; // silently ignore at limit
+    setSelectedFlavors((prev) => [...prev, f]);
   };
 
   const onToggleModifier = (m: string) => {
-    setSelectedModifiers(prev =>
-      prev.includes(m) ? prev.filter(x => x !== m) : [...prev, m]
+    setSelectedModifiers((prev) =>
+      prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]
     );
   };
 
@@ -60,18 +68,8 @@ export default function ItemDetailScreen() {
     (!celiacProtocol || glutenFree);
 
   const handleAddToOrder = () => {
-    if (!readyToAdd) {
-      if (maxFlavors > 0 && selectedFlavors.length < maxFlavors) {
-        Alert.alert('Select flavors', `Please choose ${maxFlavors} flavor${maxFlavors > 1 ? 's' : ''}.`);
-        return;
-      }
-      if (celiacProtocol && !glutenFree) {
-        Alert.alert('Gluten-Free Required', 'Celiac selected — please turn on Gluten Free to continue.');
-        return;
-      }
-    }
+    if (!readyToAdd) return;
 
-    // ↓↓↓ ADDED: push item into the cart so the cart button appears
     const modsForCart = [
       ...selectedModifiers,
       ...(item.glutenFreeNote && glutenFree ? [item.glutenFreeNote] : []),
@@ -80,34 +78,21 @@ export default function ItemDetailScreen() {
 
     addItem({
       name: item.name,
-      price: item.price,   // keep base price here; you can add modifier pricing in checkout if desired
+      price: item.price,
       qty: 1,
       flavors: selectedFlavors,
       modifiers: modsForCart,
     });
-    // ↑↑↑
 
-    // Keep your existing confirmation
-    const summary = [
-      `Item: ${item.name}`,
-      `Price: $${item.price.toFixed(2)}`,
-      maxFlavors ? `Flavors (${selectedFlavors.length}/${maxFlavors}): ${selectedFlavors.join(', ') || '-'}` : undefined,
-      selectedModifiers.length ? `Modifiers: ${selectedModifiers.join(', ')}` : undefined,
-      item.glutenFreeNote ? `Gluten Free: ${glutenFree ? 'Yes' : 'No'}` : undefined,
-      item.celiacNote ? `Celiac Protocol: ${celiacProtocol ? 'Yes' : 'No'}` : undefined,
-    ]
-      .filter(Boolean)
-      .join('\n');
-
-    Alert.alert('Added to order', summary);
+    // No popup by request
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>
-        {/* Back */}
+        {/* Back (TOP) */}
         <View style={styles.headerRow}>
-          <Pressable onPress={() => router.back()} style={styles.backBtn}>
+          <Pressable onPress={() => router.replace('/order')} style={styles.backBtn}>
             <Text style={styles.backText}>← Back</Text>
           </Pressable>
         </View>
@@ -117,9 +102,18 @@ export default function ItemDetailScreen() {
 
         {/* Title + Price */}
         <View style={styles.titleRow}>
-          <Text style={styles.title}>{item.name}</Text>
+          <Text style={styles.title} numberOfLines={2}>
+            {item.name}
+          </Text>
           <View style={styles.pricePill}>
-            <Text style={styles.priceText}>${item.price.toFixed(2)}</Text>
+            <Text
+              style={styles.priceText}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.85}
+            >
+              ${item.price.toFixed(2)}
+            </Text>
           </View>
         </View>
 
@@ -247,6 +241,11 @@ export default function ItemDetailScreen() {
           >
             <Text style={styles.addBtnText}>Add to Order</Text>
           </Pressable>
+
+          {/* Back (BOTTOM) */}
+          <Pressable onPress={() => router.replace('/order')} style={styles.backBottom}>
+            <Text style={styles.backBottomText}>← Back to Order</Text>
+          </Pressable>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -263,10 +262,38 @@ const styles = StyleSheet.create({
 
   hero: { width: '100%', height: 200, backgroundColor: '#f3f4f6' },
 
-  titleRow: { paddingHorizontal: 16, marginTop: 12, flexDirection: 'row', alignItems: 'center', gap: 8 },
-  title: { flex: 1, fontSize: 22, fontWeight: '800', color: '#111827' },
-  pricePill: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 999, backgroundColor: '#111827' },
-  priceText: { color: '#fff', fontWeight: '800', fontSize: 14 },
+  // Title + Price
+  titleRow: {
+    paddingHorizontal: 16,
+    marginTop: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  title: {
+    flexShrink: 1,
+    marginRight: 12,
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#111827',
+  },
+  pricePill: {
+    paddingHorizontal: 24,
+    paddingVertical: 6,
+    borderRadius: 999,
+    backgroundColor: '#111827',
+    minWidth: 100, // ensures single-line
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0, // don't let the pill shrink
+  },
+  priceText: {
+    color: '#fff',
+    fontWeight: '800',
+    fontSize: 16,
+    textAlign: 'center',
+    includeFontPadding: false,
+  },
 
   desc: { fontSize: 14, color: '#374151', paddingHorizontal: 16, marginTop: 8, lineHeight: 20 },
 
@@ -300,6 +327,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   addBtnText: { color: '#ffffff', fontWeight: '800', fontSize: 16 },
+
+  // bottom back
+  backBottom: { marginTop: 12, alignItems: 'center' },
+  backBottomText: { fontSize: 16, color: '#2563eb', fontWeight: '600' },
 
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   notFound: { fontSize: 18, color: '#6b7280' },

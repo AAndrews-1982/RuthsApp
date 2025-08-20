@@ -3,6 +3,8 @@ module.exports = function (api) {
     return {
       presets: ['babel-preset-expo'],
       // plugins: ['nativewind/babel'], // ✅ required for Tailwind to work
+      presets: ['babel-preset-expo'],
+    plugins: ['react-native-reanimated/plugin'],
     };
   };
   
