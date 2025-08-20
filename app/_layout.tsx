@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Tabs } from 'expo-router';
 import Loading from '../components/loading';
+import { RewardsProvider } from './context/RewardsContext';
 import { AuthProvider } from '../src/context/AuthContext';
 import {
   Ionicons,
@@ -25,59 +26,63 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <View style={{ flex: 1 }}>
-        <Tabs
-          screenOptions={({ route }) => ({
-            headerShown: false,
-            tabBarActiveTintColor: '#facc15',
-            tabBarInactiveTintColor: 'gray',
-            tabBarStyle: {
-              backgroundColor: 'white',
-              paddingHorizontal: 20,
-              paddingBottom: 20,
-              paddingTop: 5,
-              height: 100,
-            },
-            tabBarIcon: ({ color, size }) => {
-              const isMore = route.name === 'more' || route.name === 'more/index';
-              if (route.name === 'index')
-                return <Ionicons name="flash" size={size} color="#facc15" />;
-              if (route.name === 'order')
-                return <FontAwesome5 name="hamburger" size={size} color={color} />;
-              if (route.name === 'rewards')
-                return <FontAwesome5 name="gift" size={size} color={color} />;
-              if (route.name === 'scan')
-                return (
-                  <MaterialCommunityIcons name="qrcode-scan" size={size} color={color} />
-                );
-              if (route.name === 'foryou')
-                return <Feather name="star" size={size} color={color} />;
-              if (isMore)
-                return <Entypo name="dots-three-horizontal" size={size} color="#dc2626" />;
-              return null;
-            },
-          })}
-        >
-          {/* Top-level tabs */}
-          <Tabs.Screen name="index" options={{ title: 'Home' }} />
-          <Tabs.Screen name="order" options={{ title: 'Order' }} />
-          <Tabs.Screen name="rewards" options={{ title: 'Rewards' }} />
-          <Tabs.Screen name="scan" options={{ title: 'Scan' }} />
+      <RewardsProvider>
+        <View style={{ flex: 1 }}>
+          <Tabs
+            screenOptions={({ route }) => ({
+              headerShown: false,
+              tabBarActiveTintColor: '#facc15',
+              tabBarInactiveTintColor: 'gray',
+              tabBarStyle: {
+                backgroundColor: 'white',
+                paddingHorizontal: 20,
+                paddingBottom: 20,
+                paddingTop: 5,
+                height: 100,
+              },
+              tabBarIcon: ({ color, size }) => {
+                const isMore = route.name === 'more' || route.name === 'more/index';
+                if (route.name === 'index')
+                  return <Ionicons name="flash" size={size} color="#facc15" />;
+                if (route.name === 'order')
+                  return <FontAwesome5 name="hamburger" size={size} color={color} />;
+                if (route.name === 'rewards')
+                  return <FontAwesome5 name="gift" size={size} color={color} />;
+                if (route.name === 'scan')
+                  return (
+                    <MaterialCommunityIcons name="qrcode-scan" size={size} color={color} />
+                  );
+                if (route.name === 'foryou')
+                  return <Feather name="star" size={size} color={color} />;
+                if (isMore)
+                  return <Entypo name="dots-three-horizontal" size={size} color="#dc2626" />;
+                return null;
+              },
+            })}
+          >
+            {/* Top-level tabs */}
+            <Tabs.Screen name="index" options={{ title: 'Home' }} />
+            <Tabs.Screen name="order" options={{ title: 'Order' }} />
+            <Tabs.Screen name="rewards" options={{ title: 'Rewards' }} />
+            <Tabs.Screen name="scan" options={{ title: 'Scan' }} />
 
-          {/* "More" is now a folder; point to its index explicitly */}
-          <Tabs.Screen name="more/index" options={{ title: 'More' }} />
+            {/* "More" is now a folder; point to its index explicitly */}
+            <Tabs.Screen name="more/index" options={{ title: 'More' }} />
 
-          {/* Hide non-tab routes */}
-          <Tabs.Screen name="+not-found" options={{ href: null }} />
-          <Tabs.Screen name="_sitemap" options={{ href: null }} />
+            {/* Hide non-tab routes */}
+            <Tabs.Screen name="+not-found" options={{ href: null }} />
+            <Tabs.Screen name="_sitemap" options={{ href: null }} />
 
+            {/* Hide [slug] detail route from tabs */}
+            <Tabs.Screen name="item/[slug]" options={{ href: null }} />
 
-          {/* Hide nested More routes so they don't show as tabs */}
-          <Tabs.Screen name="more/sign-in" options={{ href: null }} />
-          <Tabs.Screen name="more/forgot-password" options={{ href: null }} />
-          <Tabs.Screen name="more/forgot-username" options={{ href: null }} />
-        </Tabs>
-      </View>
+            {/* Hide nested More routes so they don't show as tabs */}
+            <Tabs.Screen name="more/sign-in" options={{ href: null }} />
+            <Tabs.Screen name="more/forgot-password" options={{ href: null }} />
+            <Tabs.Screen name="more/forgot-username" options={{ href: null }} />
+          </Tabs>
+        </View>
+      </RewardsProvider>
     </AuthProvider>
   );
 }
