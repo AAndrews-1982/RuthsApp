@@ -95,6 +95,10 @@ export default function RootLayout() {
 
              {/* Hide add-missing-points route */}
               <Tabs.Screen name="more/add-missing-points" options={{ href: null }} />
+
+              {/* Hide nutrition-info route */}
+              <Tabs.Screen name="more/nutrition-info" options={{ href: null }} />
+
             </Tabs>
 
             {/* Floating mini-cart overlay (upper-left) */}

@@ -48,6 +48,10 @@ export default function MoreScreen() {
         case 'Add Missing Points':
         router.push('/more/add-missing-points');
         break;
+        case 'Nutrition Info':
+        router.push('/more/nutrition-info');
+        break;
+
 
       default:
         Alert.alert(title, 'Coming soon.');
