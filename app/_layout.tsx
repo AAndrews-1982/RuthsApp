@@ -93,6 +93,8 @@ export default function RootLayout() {
               {/* Hide recent orders route */}
               <Tabs.Screen name="more/recent-orders" options={{ href: null }} />
 
+             {/* Hide add-missing-points route */}
+              <Tabs.Screen name="more/add-missing-points" options={{ href: null }} />
             </Tabs>
 
             {/* Floating mini-cart overlay (upper-left) */}

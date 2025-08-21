@@ -45,6 +45,10 @@ export default function MoreScreen() {
       case 'Recent Orders':
         router.push('/more/recent-orders'); // ← change to relative
         break;
+        case 'Add Missing Points':
+        router.push('/more/add-missing-points');
+        break;
+
       default:
         Alert.alert(title, 'Coming soon.');
     }
