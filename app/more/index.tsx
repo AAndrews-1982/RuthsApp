@@ -31,17 +31,23 @@ export default function MoreScreen() {
     : [{ key: 'Sign In', icon: <Ionicons name="person-circle-outline" size={24} color="#374151" /> }, ...baseItems];
 
   const onPressItem = (title: string) => {
-  switch (title) {
-    case 'Sign In':
-      router.push('./sign-in'); // ✅ relative to /more
-      break;
-    case 'Sign Out':
-      signOut();
-      Alert.alert('Signed out', 'You have been signed out.');
-      break;
-    default:
-      Alert.alert(title, 'Coming soon.');
-  }
+    switch (title) {
+      case 'Sign In':
+        router.push('./sign-in'); // relative to /more
+        break;
+      case 'Sign Out':
+        signOut();
+        Alert.alert('Signed out', 'You have been signed out.');
+        break;
+      case 'Contact':
+        router.push('/more/contact'); // relative path avoids typed-route mismatch
+        break;
+      case 'Recent Orders':
+        router.push('/more/recent-orders'); // ← change to relative
+        break;
+      default:
+        Alert.alert(title, 'Coming soon.');
+    }
   };
 
   return (

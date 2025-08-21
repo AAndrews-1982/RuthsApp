@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     color: '#111827',
   },
   pricePill: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 999,
     backgroundColor: '#111827',

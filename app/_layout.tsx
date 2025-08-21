@@ -86,6 +86,13 @@ export default function RootLayout() {
 
               {/* Hide checkout route */}
               <Tabs.Screen name="checkout" options={{ href: null }} />
+
+              {/* Hide contact route */}
+              <Tabs.Screen name="more/contact" options={{ href: null }} />
+
+              {/* Hide recent orders route */}
+              <Tabs.Screen name="more/recent-orders" options={{ href: null }} />
+
             </Tabs>
 
             {/* Floating mini-cart overlay (upper-left) */}
