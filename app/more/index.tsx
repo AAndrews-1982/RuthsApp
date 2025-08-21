@@ -51,6 +51,9 @@ export default function MoreScreen() {
         case 'Nutrition Info':
         router.push('/more/nutrition-info');
         break;
+        case 'careers':
+        router.push('/more/careers');
+        break;
 
 
       default:

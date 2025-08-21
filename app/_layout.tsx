@@ -99,9 +99,16 @@ export default function RootLayout() {
               {/* Hide nutrition-info route */}
               <Tabs.Screen name="more/nutrition-info" options={{ href: null }} />
 
-            </Tabs>
+              {/* Hide careers route */}
+              <Tabs.Screen name="more/careers" options={{ href: null }} />
 
-            {/* Floating mini-cart overlay (upper-left) */}
+        
+              </Tabs>
+
+    
+
+
+              {/* Floating mini-cart overlay (upper-left) */}
             <CartMini />
           </View>
         </CartProvider>
