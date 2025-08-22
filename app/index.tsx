@@ -1,5 +1,6 @@
 import { ImageBackground, StyleSheet, Text, TouchableOpacity, View, FlatList, Image, ScrollView } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from "expo-router";
 
 const heroCards = [
   require('../assets/images/img3.png'),
@@ -16,6 +17,7 @@ const popularCards = [
 ];
 
 export default function HomeScreen() {
+  const router = useRouter();
   const [index, setIndex] = useState(0);
   const flatListRef = useRef(null);
 
@@ -47,14 +49,20 @@ export default function HomeScreen() {
             Your favorite gluten-free fried chicken, now in an app.
           </Text>
 
-          {/* Auth Buttons */}
-          <TouchableOpacity style={styles.authButton}>
-            <Text style={styles.authText}>Sign Up</Text>
-          </TouchableOpacity>
+            {/* Auth Buttons */}
+      <TouchableOpacity
+        style={styles.authButton}
+        onPress={() => router.push("/more/create-account")} // 👉 Link to sign-in
+      >
+        <Text style={styles.authText}>Sign Up</Text>
+      </TouchableOpacity>
 
-          <TouchableOpacity style={styles.authButton} onPress={() => console.log('Login pressed')}>
-            <Text style={styles.authText}>Log In</Text>
-          </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.authButton}
+        onPress={() => router.push("/more/sign-in")} // 👉 Link to sign-in
+      >
+        <Text style={styles.authText}>Log In</Text>
+      </TouchableOpacity>
         </View>
       </ImageBackground>
 
@@ -80,7 +88,11 @@ export default function HomeScreen() {
       </ScrollView>
 
       {/* Place Order Button */}
-      <TouchableOpacity style={styles.orderButton}>
+      {/* Place Order Button */}
+      <TouchableOpacity
+        style={styles.orderButton}
+        onPress={() => router.push("/order")} // navigate to order page
+      >
         <Text style={styles.orderButtonText}>Place Order</Text>
       </TouchableOpacity>
     </ScrollView>

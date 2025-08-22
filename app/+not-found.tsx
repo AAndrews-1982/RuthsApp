@@ -14,6 +14,7 @@ export default function NotFound() {
   if (pathname === '/add-missing-points') return <Redirect href="/more/add-missing-points" />;
   if (pathname === '/nutrition-info') return <Redirect href="/more/nutrition-info" />;
   if (pathname === '/contact') return <Redirect href="/more/contact" />;
+  if (pathname === '/faqs') return <Redirect href="/more/faqs" />;
 
   // Default 404 UI
   return (

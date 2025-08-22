@@ -10,6 +10,7 @@ export default function MoreLayout() {
       <Stack.Screen name="recent-orders"    options={{ title: 'Recent Orders' }} />
       <Stack.Screen name="add-missing-points" options={{ title: 'Add Missing Points' }} />
       <Stack.Screen name="nutrition-info"   options={{ title: 'Nutrition Info' }} />
+      <Stack.Screen name="faqs" options={{ title: "FAQ’s" }} />
       {/* Optional: <Stack.Screen name="faqs" options={{ title: "FAQ's" }} /> */}
       {/* Optional: <Stack.Screen name="sign-in" options={{ headerShown:false }} /> */}
     </Stack>
