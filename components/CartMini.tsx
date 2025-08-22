@@ -12,7 +12,7 @@ import Animated, {
   withSequence,
   runOnJS,
 } from 'react-native-reanimated';
-import { useCart } from '../app/context/CartContext';
+import { useCart } from '../src/context/CartContext';
 
 function usePrevious<T>(val: T) {
   const ref = useRef(val);

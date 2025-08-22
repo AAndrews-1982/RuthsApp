@@ -10,7 +10,7 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../../src/context/CartContext';
 import { ALL_MENU_ITEMS } from '../../src/data/menuData';
 
 const placeholderImage = require('../../assets/images/placeholder.png');

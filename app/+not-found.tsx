@@ -9,6 +9,11 @@ export default function NotFound() {
   if (pathname === '/sign-in') return <Redirect href="/more/sign-in" />;
   if (pathname === '/forgot-password') return <Redirect href="/more/forgot-password" />;
   if (pathname === '/forgot-username') return <Redirect href="/more/forgot-username" />;
+  if (pathname === '/careers') return <Redirect href="/more/careers" />;
+  if (pathname === '/recent-orders') return <Redirect href="/more/recent-orders" />;
+  if (pathname === '/add-missing-points') return <Redirect href="/more/add-missing-points" />;
+  if (pathname === '/nutrition-info') return <Redirect href="/more/nutrition-info" />;
+  if (pathname === '/contact') return <Redirect href="/more/contact" />;
 
   // Default 404 UI
   return (

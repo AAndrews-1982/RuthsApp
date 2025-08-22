@@ -21,7 +21,7 @@ const ADDRESS_DISPLAY = '1606 S Trenton';
 const WEBSITE = 'https://www.ruthschicken.com';
 const EMAIL = 'information@ruthschicken.com';
 
-// ⚠️ Replace these with your exact coordinates when you have them.
+// ⚠️ Replace with exact coordinates to restaurant later.
 // These are placeholder-ish coordinates; the "Open in Google Maps" button will
 // always take customers to the right place by using the address string.
 const LAT = 36.1409;

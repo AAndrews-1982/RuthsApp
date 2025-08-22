@@ -4,26 +4,18 @@ import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Tabs } from 'expo-router';
 import Loading from '../components/loading';
-import { RewardsProvider } from './context/RewardsContext';
-import { CartProvider } from './context/CartContext';
+import { RewardsProvider } from '../src/context/RewardsContext';
+import { CartProvider } from '../src/context/CartContext';
 import CartMini from '../components/CartMini';
 import { AuthProvider } from '../src/context/AuthContext';
-import {
-  Ionicons,
-  FontAwesome5,
-  MaterialCommunityIcons,
-  Feather,
-  Entypo,
-} from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, MaterialCommunityIcons, Feather, Entypo } from '@expo/vector-icons';
 
 export default function RootLayout() {
   const [showSplash, setShowSplash] = useState(true);
-
   useEffect(() => {
     const t = setTimeout(() => setShowSplash(false), 3000);
     return () => clearTimeout(t);
   }, []);
-
   if (showSplash) return <Loading onFinish={() => setShowSplash(false)} />;
 
   return (
@@ -44,7 +36,6 @@ export default function RootLayout() {
                   height: 100,
                 },
                 tabBarIcon: ({ color, size }) => {
-                  const isMore = route.name === 'more' || route.name === 'more/index';
                   if (route.name === 'index')
                     return <Ionicons name="flash" size={size} color="#facc15" />;
                   if (route.name === 'order')
@@ -55,60 +46,27 @@ export default function RootLayout() {
                     return <MaterialCommunityIcons name="qrcode-scan" size={size} color={color} />;
                   if (route.name === 'foryou')
                     return <Feather name="star" size={size} color={color} />;
-                  if (isMore)
+                  if (route.name === 'more')
                     return <Entypo name="dots-three-horizontal" size={size} color="#dc2626" />;
                   return null;
                 },
               })}
             >
-              {/* Top-level tabs */}
-              <Tabs.Screen name="index" options={{ title: 'Home' }} />
-              <Tabs.Screen name="order" options={{ title: 'Order' }} />
+              {/* ONLY Tabs.Screen children below */}
+              <Tabs.Screen name="index"   options={{ title: 'Home' }} />
+              <Tabs.Screen name="order"   options={{ title: 'Order' }} />
               <Tabs.Screen name="rewards" options={{ title: 'Rewards' }} />
-              <Tabs.Screen name="scan" options={{ title: 'Scan' }} />
+              <Tabs.Screen name="scan"    options={{ title: 'Scan' }} />
+              <Tabs.Screen name="more"    options={{ title: 'More' }} />
 
-              {/* "More" is now a folder; point to its index explicitly */}
-              <Tabs.Screen name="more/index" options={{ title: 'More' }} />
-
-              {/* Hide non-tab routes */}
-              <Tabs.Screen name="+not-found" options={{ href: null }} />
-              <Tabs.Screen name="_sitemap" options={{ href: null }} />
-
-              {/* Hide [slug] route */}
+              {/* hidden/non-tab routes — use href: null ONLY */}
+              <Tabs.Screen name="+not-found"  options={{ href: null }} />
+              <Tabs.Screen name="_sitemap"    options={{ href: null }} />
               <Tabs.Screen name="item/[slug]" options={{ href: null }} />
+              <Tabs.Screen name="checkout"    options={{ href: null }} />
+            </Tabs>
 
-              {/* Hide nested More routes */}
-              <Tabs.Screen name="more/sign-in" options={{ href: null }} />
-              <Tabs.Screen name="more/forgot-password" options={{ href: null }} />
-              <Tabs.Screen name="more/forgot-username" options={{ href: null }} />
-              <Tabs.Screen name="more/create-account" options={{ href: null }} />
-              <Tabs.Screen name="more/link-card" options={{ href: null }} />
-
-              {/* Hide checkout route */}
-              <Tabs.Screen name="checkout" options={{ href: null }} />
-
-              {/* Hide contact route */}
-              <Tabs.Screen name="more/contact" options={{ href: null }} />
-
-              {/* Hide recent orders route */}
-              <Tabs.Screen name="more/recent-orders" options={{ href: null }} />
-
-             {/* Hide add-missing-points route */}
-              <Tabs.Screen name="more/add-missing-points" options={{ href: null }} />
-
-              {/* Hide nutrition-info route */}
-              <Tabs.Screen name="more/nutrition-info" options={{ href: null }} />
-
-              {/* Hide careers route */}
-              <Tabs.Screen name="more/careers" options={{ href: null }} />
-
-        
-              </Tabs>
-
-    
-
-
-              {/* Floating mini-cart overlay (upper-left) */}
+            {/* Anything else (like overlays) must live OUTSIDE Tabs */}
             <CartMini />
           </View>
         </CartProvider>

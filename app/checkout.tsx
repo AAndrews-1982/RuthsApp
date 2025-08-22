@@ -9,8 +9,8 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { useCart } from './context/CartContext';
-import { useRewards } from './context/RewardsContext';
+import { useCart } from '../src/context/CartContext';
+import { useRewards } from '../src/context/RewardsContext';
 import { router } from 'expo-router';
 
 export default function CheckoutScreen() {

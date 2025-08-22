@@ -13,7 +13,7 @@ import {
   Platform,
 } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
-import { useRewards } from '../context/RewardsContext';
+import { useRewards } from '../../src/context/RewardsContext';
 import { router } from 'expo-router';
 
 const placeholderImage = require('../../assets/images/placeholder.png');

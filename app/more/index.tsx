@@ -17,7 +17,7 @@ const baseItems = [
   { key: 'Recent Orders', icon: <MaterialIcons name="history" size={24} color="#374151" /> },
   { key: 'Add Missing Points', icon: <Feather name="plus-circle" size={24} color="#374151" /> },
   { key: 'Nutrition Info', icon: <Feather name="info" size={24} color="#374151" /> },
-  { key: 'Help', icon: <Feather name="help-circle" size={24} color="#374151" /> },
+  { key: "FAQ's", icon: <Feather name="help-circle" size={24} color="#374151" /> }, // ← renamed from Help
   { key: 'Careers', icon: <Ionicons name="briefcase-outline" size={24} color="#374151" /> },
   { key: 'Contact', icon: <FontAwesome5 name="phone-alt" size={20} color="#374151" /> },
 ];
@@ -40,22 +40,23 @@ export default function MoreScreen() {
         Alert.alert('Signed out', 'You have been signed out.');
         break;
       case 'Contact':
-        router.push('/more/contact'); // relative path avoids typed-route mismatch
+        router.push('./contact'); // /more/contact
         break;
       case 'Recent Orders':
-        router.push('/more/recent-orders'); // ← change to relative
+        router.push('./recent-orders'); // /more/recent-orders
         break;
-        case 'Add Missing Points':
-        router.push('/more/add-missing-points');
+      case 'Add Missing Points':
+        router.push('./add-missing-points'); // /more/add-missing-points
         break;
-        case 'Nutrition Info':
-        router.push('/more/nutrition-info');
+      case 'Nutrition Info':
+        router.push('./nutrition-info'); // /more/nutrition-info
         break;
-        case 'careers':
-        router.push('/more/careers');
+      case 'Careers': // ← exact case to match the list item
+        router.push('./careers'); // /more/careers
         break;
-
-
+      case "FAQ's":
+        router.push('./faqs'); // /more/faqs
+        break;
       default:
         Alert.alert(title, 'Coming soon.');
     }

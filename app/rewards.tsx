@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
-import { useRewards, MILESTONES, TIERS } from './context/RewardsContext';
+import { useRewards, MILESTONES, TIERS } from '../src/context/RewardsContext';
 
 const placeholder = require('../assets/images/placeholder.png');
 

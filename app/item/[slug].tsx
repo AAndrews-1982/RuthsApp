@@ -12,7 +12,7 @@ import {
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ALL_MENU_ITEMS } from '../../src/data/menuData';
 import Chip from '../../components/Chip';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../../src/context/CartContext';
 
 const placeholderImage = require('../../assets/images/placeholder.png');
 
