@@ -1,6 +1,16 @@
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View, FlatList, Image, ScrollView } from 'react-native';
+// app/index.tsx
+import {
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  FlatList,
+  Image,
+  ScrollView,
+} from 'react-native';
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from "expo-router";
+import { useRouter } from 'expo-router';
 
 const heroCards = [
   require('../assets/images/img3.png'),
@@ -19,7 +29,7 @@ const popularCards = [
 export default function HomeScreen() {
   const router = useRouter();
   const [index, setIndex] = useState(0);
-  const flatListRef = useRef(null);
+  const flatListRef = useRef<FlatList<any> | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,30 +49,45 @@ export default function HomeScreen() {
         resizeMode="cover"
         style={styles.background}
       >
+        {/* 🔑 Black overlay with adjustable opacity */}
+        <View style={styles.blackOverlay} />
+
         <View style={styles.overlay}>
-          {/* Company Logo (top-left) */}
-          <Image source={require('../assets/images/logo.png')} style={styles.logo} />
+          {/* Row keeps logo and text side-by-side, each in its own container */}
+          <View style={styles.heroRow}>
+            {/* Logo container (fixed size so changes here don't affect text) */}
+            <View style={styles.logoContainer}>
+              <Image
+                source={require('../assets/images/logo.png')}
+                style={styles.logo}
+              />
+            </View>
 
-          {/* Hero text */}
-          <Text style={styles.title}>Welcome to Ruth’s Chicken</Text>
-          <Text style={styles.subtitle}>
-            Your favorite gluten-free fried chicken, now in an app.
-          </Text>
+            {/* Text container (independent from logo/buttons) */}
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>WELCOME TO RUTH'S CHICKEN</Text>
+              <Text style={styles.subtitle}>
+                Your favorite gluten-free fried chicken, now in an app.
+              </Text>
+            </View>
+          </View>
 
-            {/* Auth Buttons */}
-      <TouchableOpacity
-        style={styles.authButton}
-        onPress={() => router.push("/more/create-account")} // 👉 Link to sign-in
-      >
-        <Text style={styles.authText}>Sign Up</Text>
-      </TouchableOpacity>
+          {/* Buttons container (independent block below the row) */}
+          <View style={styles.authContainer}>
+            <TouchableOpacity
+              style={styles.authButton}
+              onPress={() => router.push('/more/create-account')}
+            >
+              <Text style={styles.authText}>Sign Up</Text>
+            </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.authButton}
-        onPress={() => router.push("/more/sign-in")} // 👉 Link to sign-in
-      >
-        <Text style={styles.authText}>Log In</Text>
-      </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.authButton}
+              onPress={() => router.push('/more/sign-in')}
+            >
+              <Text style={styles.authText}>Log In</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ImageBackground>
 
@@ -74,24 +99,25 @@ export default function HomeScreen() {
         horizontal
         showsHorizontalScrollIndicator={false}
         pagingEnabled
-        renderItem={({ item }) => (
-          <Image source={item} style={styles.heroCard} />
-        )}
+        renderItem={({ item }) => <Image source={item} style={styles.heroCard} />}
       />
 
       {/* Popular section */}
       <Text style={styles.popularTitle}>Popular</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.popularList}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.popularList}
+      >
         {popularCards.map((img, i) => (
           <Image key={i} source={img} style={styles.popularCard} />
         ))}
       </ScrollView>
 
       {/* Place Order Button */}
-      {/* Place Order Button */}
       <TouchableOpacity
         style={styles.orderButton}
-        onPress={() => router.push("/order")} // navigate to order page
+        onPress={() => router.push('/order')}
       >
         <Text style={styles.orderButtonText}>Place Order</Text>
       </TouchableOpacity>
@@ -103,34 +129,73 @@ const styles = StyleSheet.create({
   background: {
     height: 420,
     width: '100%',
+    position: 'relative',
+    backgroundColor: '#ffffff',
   },
+
+  // 🔑 Adjustable black overlay
+  blackOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'black',
+    opacity: 0.0, // 0.1 = 10%, 0.5 = 50%, etc.
+  },
+
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
     paddingHorizontal: 24,
-    paddingTop: 40,
+    paddingTop: 20,
+  },
+
+  /* --- Hero Row: logo (left) + text (right) --- */
+  heroRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  logoContainer: {
+    width: 110,
+    height: 110,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+    marginLeft: 10,
+    marginTop: 20,
   },
   logo: {
-    width: 150,
-    height: 150,
+    width: '125%',
+    height: '125%',
     resizeMode: 'contain',
-    marginBottom: 10,
+  },
+
+  textContainer: {
+    flex: 1,
+    flexShrink: 1,
+    paddingLeft: 5,
   },
   title: {
     color: 'white',
-    fontSize: 28,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 6,
+    marginTop: 60,
+    paddingLeft: 30,
   },
   subtitle: {
     color: 'white',
-    fontSize: 16,
-    marginBottom: 10,
+    fontSize: 14,
+    paddingLeft: 30,
+  },
+
+  /* --- Buttons --- */
+  authContainer: {
+    marginTop: -20,
+    width: '100%',
+    alignItems: 'flex-start',
   },
   authButton: {
-    backgroundColor: '#facc15',
+    backgroundColor: '#ffea06ff',
     paddingVertical: 6,
     paddingHorizontal: 16,
     borderRadius: 4,
@@ -141,6 +206,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 14,
   },
+
+  /* --- Below-hero content --- */
   heroCard: {
     width: 300,
     height: 200,
